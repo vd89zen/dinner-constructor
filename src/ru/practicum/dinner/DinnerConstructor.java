@@ -6,23 +6,32 @@ import java.util.Random;
 
 public class DinnerConstructor {
     private ArrayList<String> namesOfDish;
-    private HashMap<String, ArrayList<String>> menuOfDishes;
-    private Random random;
+    private final HashMap<String, ArrayList<String>> menuOfDishes;
+    private final Random random;
 
-    DinnerConstructor(Random rnd) {
+    public DinnerConstructor(Random random) {
         menuOfDishes = new HashMap<>();
-        random = rnd;
+        this.random = random;
     }
 
-    void addDishToMenu(String dishType, String dishName, boolean isTestData) {
-        if (!isTestData) {
+    public void addDishToMenu(String dishType, String dishName, boolean isTestData) {
+        if (isTestData) { //part for generate test menu
             if (checkTypeOfDish(dishType)) {
                 namesOfDish = menuOfDishes.get(dishType);
-                if (!checkNameOfDish(dishName)) {
+                namesOfDish.add(dishName);
+            } else {
+                namesOfDish = new ArrayList<>();
+                namesOfDish.add(dishName);
+                menuOfDishes.put(dishType, namesOfDish);
+            }
+        } else {
+            if (checkTypeOfDish(dishType)) {
+                namesOfDish = menuOfDishes.get(dishType);
+                if (checkNameOfDish(dishName)) {
+                    System.out.println("Блюдо - " + dishName + " (тип " + dishType + ") - уже есть в Меню.");
+                } else {
                     namesOfDish.add(dishName);
                     System.out.println("Блюдо - " + dishName + " (тип " + dishType + ") - добавлено в Меню.");
-                } else {
-                    System.out.println("Блюдо - " + dishName + " (тип " + dishType + ") - уже есть в Меню.");
                 }
             } else {
                 namesOfDish = new ArrayList<>();
@@ -31,27 +40,18 @@ public class DinnerConstructor {
                 System.out.println("Блюдо - " + dishName + " (тип " + dishType + ") - добавлено в Меню.");
             }
             System.out.println();
-        } else { //part for generate test menu
-            if (checkTypeOfDish(dishType)) {
-                namesOfDish = menuOfDishes.get(dishType);
-                namesOfDish.add(dishName);
-            } else {
-                namesOfDish = new ArrayList<>();
-                namesOfDish.add(dishName);
-                menuOfDishes.put(dishType, namesOfDish);
-            }
         }
     }
 
-    boolean checkTypeOfDish(String type) {
+    public boolean checkTypeOfDish(String type) {
         return menuOfDishes.containsKey(type);
     }
 
-    boolean checkNameOfDish(String name) {
+    private boolean checkNameOfDish(String name) {
         return namesOfDish.contains(name);
     }
 
-    void generateCombo(int numberOfCombos, ArrayList<String> typesForCombo)  {
+    public void generateCombo(int numberOfCombos, ArrayList<String> typesForCombo)  {
         ArrayList<String> namesTypeOfDish;
         ArrayList<String> comboMenu;
 
@@ -70,7 +70,7 @@ public class DinnerConstructor {
     }
 
     //for test
-    void generateTestMenuOfDish() {
+    public void generateTestMenuOfDish() {
         addDishToMenu("НАПИТОК", "компот", true);
         addDishToMenu("НАПИТОК", "сок", true);
         addDishToMenu("НАПИТОК", "алкоголь легкий", true);
@@ -88,7 +88,7 @@ public class DinnerConstructor {
     }
 
     //for test and convenience
-    void printAllMenu() {
+    public void printAllMenu() {
         for (String typeDish : menuOfDishes.keySet()) {
             System.out.println("Тип блюда: " + typeDish);
             System.out.println("Названия блюд: " + menuOfDishes.get(typeDish));
@@ -97,7 +97,7 @@ public class DinnerConstructor {
     }
 
     //for convenience
-    void printTypesOfDishes() {
+    public void printTypesOfDishes() {
         System.out.println(menuOfDishes.keySet());
     }
 }

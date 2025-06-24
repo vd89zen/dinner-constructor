@@ -8,12 +8,12 @@ public class Main {
 
     static DinnerConstructor dc;
     static Scanner scanner;
-    static Random rnd;
+    static Random random;
 
     public static void main(String[] args) {
-        rnd = new Random();
+        random = new Random();
         scanner = new Scanner(System.in);
-        dc = new DinnerConstructor(rnd);
+        dc = new DinnerConstructor(random);
 
         dc.generateTestMenuOfDish(); //создаём тестовое меню
 
